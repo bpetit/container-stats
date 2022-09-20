@@ -1,0 +1,33 @@
+name: Publish release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get current tag
+        id: get-current-tag
+        uses: zingimmick/github-action-get-current-tag@v1
+
+      - name: Print tag
+        run: echo ${{steps.get-current-tag.outputs.tag}}
+
+      - name: Build  docker image
+        run: docker build . --tag ghcr.io/bpetit/container-stats:${{steps.get-current-tag.outputs.tag}}
+
+      - name: Push docker image
+        run: docker push ghcr.io/bpetit/container-stats:${{steps.get-current-tag.outputs.tag}}

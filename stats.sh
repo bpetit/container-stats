@@ -8,8 +8,7 @@ public_ip_address=$(host myip.opendns.com resolver1.opendns.com | grep "myip.ope
 
 while [ true ]
 do
-cat << EOF | curl --data-binary @- ${PUSHGATEWAY_ENDPOINT}/metrics/job/${JOB_NAME}/instance/${public_ip_address}
-  docker stats --no-stream | grep -v CONTAINER | awk -f docker_stats_to_prometheus.awk
-EOF
-  sleep 5
+#cat << EOF | curl --data-binary @- ${PUSHGATEWAY_ENDPOINT}/metrics/job/${JOB_NAME}/instance/${public_ip_address}
+  echo -e "HTTP/1.1 200 OK\n\n$(docker stats --no-stream | grep -v CONTAINER | awk -f docker_stats_to_prometheus.awk)" | nc -l -k -p 8089;
+#EOF
 done

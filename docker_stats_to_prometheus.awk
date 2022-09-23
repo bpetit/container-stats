@@ -18,19 +18,19 @@ function compute_as_kB(ram_usage) {
 }
 BEGIN {
     print "# HELP container_cpu_time_percent CPU time percentage of use by the container";
-    print "# TYPE container_cpu_time_percent Gauge";
+    print "# TYPE container_cpu_time_percent gauge";
     print "# HELP container_memory_use RAM usage of the container, in "ram_usage_unit;
-    print "# TYPE container_memory_use Gauge";
+    print "# TYPE container_memory_use gauge";
     print "# HELP container_memory_use_percent RAM usage of the container, in %";
-    print "# TYPE container_memory_use_percent Gauge";
+    print "# TYPE container_memory_use_percent gauge";
     print "# HELP container_net_input network data input accumulated, in "net_input_unit;
-    print "# TYPE container_net_input Counter";
+    print "# TYPE container_net_input counter";
     print "# HELP container_net_output network data output accumulated, in "net_output_unit;
-    print "# TYPE container_net_output Counter";
+    print "# TYPE container_net_output counter";
     print "# HELP container_disk_input disk data input accumulated, in "disk_input_unit;
-    print "# TYPE container_disk_input Counter";
+    print "# TYPE container_disk_input counter";
     print "# HELP container_disk_output disk data output accumulated, in "disk_output_unit;
-    print "# TYPE container_disk_output Counter";
+    print "# TYPE container_disk_output counter";
 }
 {
     # $1 container id
@@ -48,7 +48,7 @@ BEGIN {
     # $13 container io output XB counter
     # $14 container pid
 
-    labels="{container_name=\""$2"\", timestamp=\""systime()"\"}"
+    labels="{container_name=\""$2"\"}"
 
     ram_usage = compute_as_kB($4)
     ram_usage_unit="KiB" 
